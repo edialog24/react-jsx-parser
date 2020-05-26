@@ -13,7 +13,7 @@
   "version": "1.23.0",
   "dependencies": {
     "acorn": "^7.1.1",
-    "acorn-jsx": "^5.2.0"
+    "acorn-jsx": "git+https://github.com/edialog24/acorn-jsx.git"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -54,7 +54,6 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
     "postversion": "git push origin HEAD && git push origin HEAD --tags",
-    "prebuild": "mkdirp ./lib && rm -rf ./lib/*",
     "preversion": "yarn test",
     "sourcemap": "yarn build && source-map-explorer ./lib/react-jsx-parser.min.js",
     "test": "yarn jest",
