@@ -32,6 +32,7 @@ export default class JsxParser extends Component {
   parseJSX = rawJSX => {
     const wrappedJsx = `<root>${rawJSX}</root>`
     let parsed = []
+    this.currentElement = 0;
     try {
       parsed = parser.parse(wrappedJsx)
       parsed = parsed.body[0].expression.children || []
@@ -241,7 +242,21 @@ export default class JsxParser extends Component {
       props.style = parseStyle(props.style)
     }
 
-    return React.createElement(component || name.toLowerCase(), props, children)
+    if(!this.elements) {
+      this.elements = {};
+    }
+    this.currentElement++;
+    if(this.elements[this.currentElement]) {
+      this.elements[this.currentElement].element = React.cloneElement(this.elements[this.currentElement].element, props, children);
+      this.elements[this.currentElement].props = props;
+      return this.elements[this.currentElement].element
+
+    } else {
+      this.elements[this.currentElement] = {};
+      this.elements[this.currentElement].element = React.createElement(component || name.toLowerCase() , props, children);
+      this.elements[this.currentElement].props = props;
+      return this.elements[this.currentElement].element
+    }
   }
 
   render = () => {
